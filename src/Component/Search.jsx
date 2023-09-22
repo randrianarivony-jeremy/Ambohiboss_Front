@@ -55,7 +55,7 @@ function Search({ setCloseOnBlur, display }) {
           </Box>
         </Square>
       ) : (
-        <InputGroup position={"absolute"} bottom={0}>
+        <InputGroup position={"absolute"} bottom={0} size={"lg"}>
           <Input
             type="text"
             variant={"filled"}
@@ -71,7 +71,7 @@ function Search({ setCloseOnBlur, display }) {
             placeholder="Activité, profession, job, ..."
           />
           <InputRightElement>
-            <IonIcon icon={searchOutline} />
+            <IonIcon icon={searchOutline} style={{ fontSize: "24px" }} />
           </InputRightElement>
         </InputGroup>
       )}

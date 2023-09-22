@@ -7,7 +7,6 @@ import {
   DrawerHeader,
   Heading,
   Image,
-  List,
   ListItem,
   Stack,
   Text,
@@ -38,16 +37,14 @@ export default function About() {
               <Text>
                 Ses utilisateurs peuvent ajouter les emplacements de leurs activités,les modifier ou supprimer.
               </Text>
-              <Text>
-                Vous pourrez ainsi trouver plus facilement :
-                <UnorderedList>
-                  <ListItem>
-                    dans quel endroit n'existe-t-il pas encore le genre d'activité que vous voulez lancer.
-                  </ListItem>
-                  <ListItem>dans quel endroit votre genre activité marche le plus.</ListItem>
-                  <ListItem>où se trouve les concurrents.</ListItem>
-                </UnorderedList>
-              </Text>
+              <Text>Vous pourrez ainsi trouver plus facilement :</Text>
+              <UnorderedList>
+                <ListItem>
+                  dans quel endroit n'existe-t-il pas encore le genre d'activité que vous voulez lancer.
+                </ListItem>
+                <ListItem>dans quel endroit votre genre activité marche le plus.</ListItem>
+                <ListItem>où se trouve les concurrents.</ListItem>
+              </UnorderedList>
               <Text>
                 Ceci afin de vous aider à lancer des activités plus prospères parce qu'un bon emplacement est très
                 favorable au dévéloppement d'une activité économique.

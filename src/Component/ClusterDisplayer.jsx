@@ -66,7 +66,6 @@ export default function ClusterDisplayer() {
       title: "Aucun résultat",
       description: "Aucun résultat trouvé pour " + keyword,
       isClosable: true,
-      duration: null,
     });
   if (isError) return toast({ status: "error", title: "Erreur", description: error.message, isClosable: true });
 }

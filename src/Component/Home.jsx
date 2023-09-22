@@ -18,6 +18,8 @@ import Menu from "./Menu";
 import Onboarding from "./Onboarding";
 import Search from "./Search";
 import Location from "./Location";
+import { useWindowScroll } from "@uidotdev/usehooks";
+import { useLockBodyScroll } from "@uidotdev/usehooks";
 
 export const mapContext = createContext();
 export const minifiedStyle = [
@@ -139,6 +141,7 @@ export default function Home() {
   const [addInterface, setAddInterface] = useState(false);
   const [keyword, setKeyword] = useState("Cashpoint");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  useLockBodyScroll();
 
   const mapRef = useCallback((node) => {
     node && setMapContainer(node);
