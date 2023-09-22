@@ -53,14 +53,15 @@ export default function ClusterDisplayer() {
 
   useEffect(() => {
     if (map && isSuccess && initial.current) {
-      clusterDisplay.current(data[0]);
+     if (data.length > 0) clusterDisplay.current(data[0]);
       setDataAvailable(true);
       initial.current = false;
     }
   }, [isSuccess, map]);
 
-  if (isSuccess && data.length === 0)
+  if (isSuccess && data.length === 0 && !toast.isActive("emptyToast"))
     return toast({
+      id: "emptyToast",
       status: "info",
       title: "Aucun résultat",
       description: "Aucun résultat trouvé pour " + keyword,
