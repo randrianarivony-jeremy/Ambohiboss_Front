@@ -2,8 +2,6 @@ html,
 body,
 :global(#app),
 :global(#container) {
-  height: 100%;
-  overflow: hidden;
   margin: 0;
   padding: 0;
 }
@@ -17,4 +15,13 @@ body,
 }
 .swiper-pagination-bullets{
   bottom: 0 !important;
+}
+body {
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
+}
+
+html {
+  height: -webkit-fill-available;
 }
