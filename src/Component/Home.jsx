@@ -20,6 +20,7 @@ import Search from "./Search";
 import Location from "./Location";
 import { useWindowScroll } from "@uidotdev/usehooks";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export const mapContext = createContext();
 export const minifiedStyle = [
@@ -142,6 +143,7 @@ export default function Home() {
   const [keyword, setKeyword] = useState("Cashpoint");
   const { isOpen, onOpen, onClose } = useDisclosure();
   // useLockBodyScroll();
+  const { height } = useWindowSize();
 
   const mapRef = useCallback((node) => {
     node && setMapContainer(node);
@@ -177,7 +179,7 @@ export default function Home() {
         mapOptions={mapOptions}
         libraries={["places"]}
       >
-        <div ref={mapRef} id="container" style={{ height: "100vh" }} />
+        <div ref={mapRef} id="container" style={{ height: height + "px" }} />
         <mapContext.Provider
           value={{
             selected,
