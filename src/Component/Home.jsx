@@ -141,7 +141,7 @@ export default function Home() {
   const [addInterface, setAddInterface] = useState(false);
   const [keyword, setKeyword] = useState("Cashpoint");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  useLockBodyScroll();
+  // useLockBodyScroll();
 
   const mapRef = useCallback((node) => {
     node && setMapContainer(node);
