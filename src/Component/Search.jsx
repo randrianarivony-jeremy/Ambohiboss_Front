@@ -18,10 +18,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { IonIcon } from "@ionic/react";
-import { useQuery } from "@tanstack/react-query";
+import { useWindowSize } from "@uidotdev/usehooks";
 import { searchOutline } from "ionicons/icons";
 import React, { useContext, useEffect } from "react";
-import { apiCall } from "..";
 import { mapContext } from "./Home";
 import JobSearch from "./JobSearch";
 import PlaceSearch from "./PlaceSearch";
@@ -29,8 +28,10 @@ import PlaceSearch from "./PlaceSearch";
 function Search({ setCloseOnBlur, display }) {
   const { setSelected, mapRef, inputRef, searchDefaultTab, keyword } = useContext(mapContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { height } = useWindowSize();
 
   useEffect(() => {
+    console.log(height);
     if (!isOpen && display === "menu") setCloseOnBlur(true);
   }, [isOpen]);
   return (
@@ -85,7 +86,7 @@ function Search({ setCloseOnBlur, display }) {
         finalFocusRef={mapRef}
       >
         <DrawerOverlay />
-        <DrawerContent zIndex={900}>
+        <DrawerContent height={height}>
           <DrawerCloseButton />
           <DrawerBody paddingX={0}>
             <Tabs isFitted height={"100%"} isLazy={true} defaultIndex={searchDefaultTab.current === "job" ? 0 : 1}>

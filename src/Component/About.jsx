@@ -15,16 +15,18 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import sample from "../Assets/Sample.png";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function About() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { height } = useWindowSize();
   return (
     <>
       <Heading size={"lg"} position={"absolute"} top={2} left={2} onClick={onOpen}>
         Ambohiboss
       </Heading>
       <Drawer isOpen={isOpen} onClose={onClose} onOpen={onOpen} placement="right" size="full" Z>
-        <DrawerContent zIndex={900}>
+        <DrawerContent height={height}>
           <DrawerCloseButton />
           <DrawerHeader paddingX={3}>Ambohiboss</DrawerHeader>
           <DrawerBody paddingX={3}>

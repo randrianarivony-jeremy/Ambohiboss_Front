@@ -26,6 +26,7 @@ import { useGoogleMap } from "@ubilabs/google-maps-react-hooks";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { apiCall } from "..";
 import { mapContext } from "./Home";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function Location() {
   const google = window.google;
@@ -42,6 +43,7 @@ export default function Location() {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const { onOpen: autocompleteOpen, isOpen: autocompleteOpened, onClose: autocompleteClose } = useDisclosure();
   const toast = useToast();
+  const { height } = useWindowSize();
 
   const { data, isSuccess: autocompleteSuccess } = useQuery({
     queryKey: [keyword],
@@ -122,7 +124,7 @@ export default function Location() {
         </HStack>
         <Drawer isOpen={isOpen} onClose={onClose} onOpen={onOpen} placement="right" size="full">
           <DrawerOverlay />
-          <DrawerContent>
+          <DrawerContent height={height}>
             <DrawerHeader>Ajouter votre emplacement</DrawerHeader>
             <DrawerBody>
               <form onSubmit={mutate}>
