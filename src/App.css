@@ -1,0 +1,20 @@
+html,
+body,
+:global(#app),
+:global(#container) {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.pac-container{
+  z-index: 2000;
+}
+
+.chakra-modal__content-container{
+  align-items: flex-end !important;
+}
+.swiper-pagination-bullets{
+  bottom: 0 !important;
+}
