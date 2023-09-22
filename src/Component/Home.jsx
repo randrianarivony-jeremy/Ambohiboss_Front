@@ -10,17 +10,15 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { GoogleMapsProvider } from "@ubilabs/google-maps-react-hooks";
+import { useWindowSize } from "@uidotdev/usehooks";
 import React, { createContext, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import logo from "../Assets/logo.svg";
 import About from "./About";
 import ClusterDisplayer from "./ClusterDisplayer";
+import Location from "./Location";
 import Menu from "./Menu";
 import Onboarding from "./Onboarding";
 import Search from "./Search";
-import Location from "./Location";
-import { useWindowScroll } from "@uidotdev/usehooks";
-import { useLockBodyScroll } from "@uidotdev/usehooks";
-import { useWindowSize } from "@uidotdev/usehooks";
 
 export const mapContext = createContext();
 export const minifiedStyle = [
@@ -142,7 +140,6 @@ export default function Home() {
   const [addInterface, setAddInterface] = useState(false);
   const [keyword, setKeyword] = useState("Cashpoint");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // useLockBodyScroll();
   const { height } = useWindowSize();
 
   const mapRef = useCallback((node) => {
