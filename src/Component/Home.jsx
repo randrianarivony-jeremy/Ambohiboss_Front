@@ -24,6 +24,7 @@ import Onboarding from "./Onboarding";
 import Search from "./Search";
 import { Ambohiboss } from "../App";
 import { ReactSVG } from "react-svg";
+import logo from "../Assets/RANAVALONA.png";
 
 export const mapContext = createContext();
 export const minifiedStyle = [
@@ -139,7 +140,7 @@ export default function Home() {
   const [mapContainer, setMapContainer] = useState(null);
   const [selected, setSelected] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
-  // const [imgLoading, setImgLoading] = useState(true);
+  const [imgLoading, setImgLoading] = useState(true);
   const searchDefaultTab = useRef("place");
   const markerClusterRef = useRef();
   const clusterDisplay = useRef();
@@ -179,12 +180,11 @@ export default function Home() {
             <Spinner thickness={"2px"} speed="0.8s" emptyColor="gray.200" color="blue.500" />
           </ModalBody>
           <ModalFooter justifyContent={"center"} flexDirection={"column"} position={"relative"}>
-            {/* <Image src={logo} height={10} onLoad={() => setImgLoading(false)} onError={() => setImgLoading(false)} /> */}
-            <AspectRatio ratio={3 / 2} width={16}>
-              {/* <ReactSVG src={logo} style={{ height: "40px", width: "56" }} /> */}
-              <ReactLogo />
-            </AspectRatio>
-            {/* {imgLoading && <Skeleton top={4} rounded={"sm"} width={14} height={10} position="absolute" zIndex={1} />} */}
+            {/* <AspectRatio ratio={3 / 2} width={16}> */}
+            <Image src={logo} height={10} onLoad={() => setImgLoading(false)} onError={() => setImgLoading(false)} />
+            {/* <ReactSVG src={logo} style={{ height: "40px", width: "56" }} /> */}
+            {/* </AspectRatio> */}
+            {imgLoading && <Skeleton top={4} rounded={"sm"} width={14} height={10} position="absolute" zIndex={1} />}
             <Text fontSize={"sm"}>
               par <strong>Ranavalona Inc.</strong>
             </Text>

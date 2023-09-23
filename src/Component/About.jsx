@@ -19,6 +19,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import React, { useState } from "react";
 import { Ambohiboss } from "../App";
 import sample from "../Assets/Sample.png";
+import { ReactComponent as ReactLogo } from "../Assets/logo.svg";
 
 export default function About() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,7 +53,9 @@ export default function About() {
                   {imgLoading && <Skeleton width="100%" height={"100%"} position="absolute" zIndex={1} />}
                 </>
               </AspectRatio>
-
+              <AspectRatio ratio={3 / 2} width={16}>
+                <ReactLogo />
+              </AspectRatio>
               <Text>
                 <strong>Ambohiboss</strong> est un outil conçu pour visualiser les emplacements géographiques des
                 activités économiques.

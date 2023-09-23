@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -100,6 +101,7 @@ function Search({ setCloseOnBlur, display }) {
                 </TabPanel>
               </TabPanels>
             </Tabs>
+            <Button>{window.scrollY}</Button>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

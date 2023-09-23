@@ -5,16 +5,13 @@ import { useGoogleMap } from "@ubilabs/google-maps-react-hooks";
 import { useContext, useEffect, useRef } from "react";
 import { apiCall } from "..";
 import { mapContext } from "./Home";
-import { useNetworkState } from "@uidotdev/usehooks";
 
 export default function ClusterDisplayer() {
   const google = window.google;
   const map = useGoogleMap();
-  const state = useNetworkState();
   const toast = useToast();
   const initial = useRef(true);
   const { markerClusterRef, clusterDisplay, keyword, setDataAvailable } = useContext(mapContext);
-  console.log(state);
 
   const { isSuccess, data, isError, error } = useQuery({
     queryKey: [keyword],
