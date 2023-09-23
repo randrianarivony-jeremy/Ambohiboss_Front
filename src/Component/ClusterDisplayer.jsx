@@ -5,13 +5,16 @@ import { useGoogleMap } from "@ubilabs/google-maps-react-hooks";
 import { useContext, useEffect, useRef } from "react";
 import { apiCall } from "..";
 import { mapContext } from "./Home";
+import { useNetworkState } from "@uidotdev/usehooks";
 
 export default function ClusterDisplayer() {
   const google = window.google;
   const map = useGoogleMap();
+  const state = useNetworkState();
   const toast = useToast();
   const initial = useRef(true);
   const { markerClusterRef, clusterDisplay, keyword, setDataAvailable } = useContext(mapContext);
+  console.log(state);
 
   const { isSuccess, data, isError, error } = useQuery({
     queryKey: [keyword],
@@ -53,19 +56,19 @@ export default function ClusterDisplayer() {
 
   useEffect(() => {
     if (map && isSuccess && initial.current) {
-     if (data.length > 0) clusterDisplay.current(data[0]);
+      if (data.length > 0) clusterDisplay.current(data[0]);
+      if (data.length === 0 && !toast.isActive("emptyToast"))
+        toast({
+          id: "emptyToast",
+          status: "info",
+          title: "Aucun résultat",
+          description: "Aucun résultat trouvé pour " + keyword,
+          isClosable: true,
+        });
       setDataAvailable(true);
       initial.current = false;
     }
+    if (map && isError && !toast.isActive("errorToast"))
+      toast({ id: "errorToast", status: "error", title: "Erreur", description: error.message, isClosable: true });
   }, [isSuccess, map]);
-
-  if (isSuccess && data.length === 0 && !toast.isActive("emptyToast"))
-    return toast({
-      id: "emptyToast",
-      status: "info",
-      title: "Aucun résultat",
-      description: "Aucun résultat trouvé pour " + keyword,
-      isClosable: true,
-    });
-  if (isError) return toast({ status: "error", title: "Erreur", description: error.message, isClosable: true });
 }

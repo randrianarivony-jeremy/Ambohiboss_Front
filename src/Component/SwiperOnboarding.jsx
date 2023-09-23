@@ -20,10 +20,7 @@ export default function SwiperOnboarding() {
             Bienvenue
           </Heading>
           <Heading size={"sm"} textAlign={"center"}>
-            Marquer votre territoire avant qu'un nouveau concurrent arrive.
-          </Heading>
-          <Heading size={"sm"} textAlign={"center"}>
-            Visualiser l'emplacement de vos concurrents avant de vous lancer.
+            Trouver le meilleur emplacement pour votre future activité
           </Heading>
         </Stack>
       </SwiperSlide>

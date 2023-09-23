@@ -6,6 +6,8 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
+  Skeleton,
+  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -19,6 +21,7 @@ import Location from "./Location";
 import Menu from "./Menu";
 import Onboarding from "./Onboarding";
 import Search from "./Search";
+import { Ambohiboss } from "../App";
 
 export const mapContext = createContext();
 export const minifiedStyle = [
@@ -115,7 +118,7 @@ export const minifiedStyle = [
 ];
 
 const mapOptions = {
-  center: { lat: -18.8791902, lng: 47.5079055 },
+  center: { lat: -18.915515990399303, lng: 47.52165967702609 },
   zoom: 12,
   disableDefaultUI: true,
   maxZoom: 20,
@@ -134,11 +137,12 @@ export default function Home() {
   const [mapContainer, setMapContainer] = useState(null);
   const [selected, setSelected] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
+  const [imgLoading, setImgLoading] = useState(true);
   const searchDefaultTab = useRef("place");
   const markerClusterRef = useRef();
   const clusterDisplay = useRef();
   const [addInterface, setAddInterface] = useState(false);
-  const [keyword, setKeyword] = useState("Cashpoint");
+  const [keyword, setKeyword] = useState("gargotte");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { height } = useWindowSize();
 
@@ -159,11 +163,22 @@ export default function Home() {
       {/* O N L O A D I N G  */}
       <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="full" motionPreset="scale">
         <ModalContent>
-          <ModalBody display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <Heading fontStyle={"italic"}>Ambohiboss</Heading>
+          <ModalBody
+            display={"flex"}
+            flexDirection="column"
+            alignItems={"center"}
+            justifyContent={"center"}
+            marginTop={20}
+          >
+            <Ambohiboss />
+            <Text fontFamily={"italianno"} fontSize={"3xl"}>
+              choose the best place
+            </Text>
+            <Spinner thickness={"2px"} speed="0.8s" emptyColor="gray.200" color="blue.500" />
           </ModalBody>
-          <ModalFooter justifyContent={"center"} flexDirection={"column"}>
-            <Image src={logo} height={10} />
+          <ModalFooter justifyContent={"center"} flexDirection={"column"} position={"relative"}>
+            <Image src={logo} height={10} onLoad={() => setImgLoading(false)} onError={() => setImgLoading(false)} />
+            {imgLoading && <Skeleton top={4} rounded={"sm"} width={14} height={10} position="absolute" zIndex={1} />}
             <Text fontSize={"sm"}>
               par <strong>Ranavalona Inc.</strong>
             </Text>
