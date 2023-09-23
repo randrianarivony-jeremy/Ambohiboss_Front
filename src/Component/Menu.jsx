@@ -18,7 +18,7 @@ import React, { useContext, useState } from "react";
 import Geolocalisation from "./Geolocalisation";
 import MapStyle from "./MapStyle";
 import Search from "./Search";
-import { mapContext } from "./Home";
+import { mapContext } from "./MapContext";
 import { useClickAway } from "@uidotdev/usehooks";
 
 export default function MenuBtn() {
@@ -27,7 +27,9 @@ export default function MenuBtn() {
   const [satelliteView, setSatelliteView] = useState(false);
   const [closeOnBlur, setCloseOnBlur] = useState(true);
   const { setAddInterface } = useContext(mapContext);
-  const focusRef = useClickAway(() => onClose());
+  const focusRef = useClickAway(() => {
+    if (closeOnBlur) onClose();
+  });
 
   const handleMapType = () => {
     if (satelliteView) {

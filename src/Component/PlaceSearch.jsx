@@ -54,6 +54,7 @@ export default function PlaceSearch({ onClose }) {
   };
 
   const selectSuggestion = (suggestion) => {
+    console.log("first");
     placesService?.getDetails(
       { placeId: suggestion.id, fields: ["geometry.location", "types"] },
       (placeResult, status) => {

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
 import React, { useContext } from "react";
 import { apiCall } from "..";
-import { mapContext } from "./Home";
+import { mapContext } from "./MapContext";
 
 export default function JobSearch({ onClose }) {
   const { inputRef, keyword, setKeyword, clusterDisplay } = useContext(mapContext);

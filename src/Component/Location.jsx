@@ -25,15 +25,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useGoogleMap } from "@ubilabs/google-maps-react-hooks";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { apiCall } from "..";
-import { mapContext } from "./Home";
-import { useWindowSize } from "@uidotdev/usehooks";
+import { usePrevious, useWindowSize } from "@uidotdev/usehooks";
+import { mapContext } from "./MapContext";
 
 export default function Location() {
   const google = window.google;
-  const { selected, setSelected, markerClusterRef, setAddInterface } = useContext(mapContext);
+  const { selected, setSelected, markerClusterRef, setAddInterface, infoWindowRef } = useContext(mapContext);
   const map = useGoogleMap();
   const [keyword, setKeyword] = useState("");
-  const [showFooter, setShowFooter] = useState(true);
   const nameRef = useRef();
   const categoryRef = useRef();
   const descriptionRef = useRef();
@@ -45,9 +44,10 @@ export default function Location() {
   const { onOpen: autocompleteOpen, isOpen: autocompleteOpened, onClose: autocompleteClose } = useDisclosure();
   const toast = useToast();
   const { height } = useWindowSize();
+  const previousHeight = usePrevious(height);
 
   const { data, isSuccess: autocompleteSuccess } = useQuery({
-    queryKey: [keyword],
+    queryKey: [keyword, "autocomplete"],
     queryFn: async () => {
       const { data } = await apiCall.get("job/autocomplete?query=" + keyword);
       return data;
@@ -57,18 +57,16 @@ export default function Location() {
     refetchOnWindowFocus: false,
   });
 
-  const handleRegister = async () => {
-    apiCall.post("job", {
-      name: nameRef.current.value,
-      category: categoryRef.current.value,
-      description: descriptionRef.current.value,
-      opening: openingDate.current.value,
-      lat: positionRef.current.lat(),
-      lng: positionRef.current.lng(),
-    });
-  };
-  const { mutate, isLoading, isSuccess } = useMutation({
-    mutationFn: handleRegister,
+  const { mutate, isLoading, isSuccess, isError, error } = useMutation({
+    mutationFn: () =>
+      apiCall.post("job", {
+        name: nameRef.current.value,
+        category: categoryRef.current.value,
+        description: descriptionRef.current.value,
+        opening: openingDate.current.value,
+        lat: positionRef.current.lat(),
+        lng: positionRef.current.lng(),
+      }),
   });
 
   const handleClear = () => {
@@ -80,7 +78,12 @@ export default function Location() {
   useEffect(() => {
     if (markerClusterRef.current) markerClusterRef.current.clearMarkers();
     if (!toast.isActive("tips"))
-      toast({ id: "tips", status: "info", description: "Cliquer sur l'endroit précis que vous voulez marquer" });
+      toast({
+        id: "tips",
+        status: "info",
+        position: "top",
+        description: "Cliquer sur l'endroit précis que vous voulez marquer",
+      });
   }, []);
 
   useEffect(() => {
@@ -104,18 +107,42 @@ export default function Location() {
     });
   }, [map]);
 
+  // M U T A T I O N
   useEffect(() => {
     if (isSuccess) {
       onClose();
       setAddInterface(false);
+      infoWindowRef.current.setContent(`
+            <Heading>${nameRef.current.value}</Heading>
+        `);
+      infoWindowRef.current.open({ map, anchor: markerRef.current });
       setSelected(false);
+      if (!toast.isActive("submitSuccess"))
+        toast({
+          id: "submitSuccess",
+          status: "success",
+          title: "Enregistrement réussi",
+        });
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      onClose();
+      if (!toast.isActive("submitError"))
+        toast({
+          id: "submitError",
+          status: "error",
+          title: "Enregistrement échoué",
+          description: error.message,
+        });
+    }
+  }, [isError]);
 
   if (selected)
     return (
       <>
-        <HStack bgColor={"white"} position={"absolute"} bottom={10} width={"100%"} justify={"center"} padding={2}>
+        <HStack bgColor={"white"} position={"absolute"} bottom={5} width={"100%"} justify={"center"} padding={2}>
           <Button width={"50%"} variant={"solid"} maxWidth={"250px"} onClick={handleClear}>
             Effacer
           </Button>
@@ -128,23 +155,16 @@ export default function Location() {
           <DrawerContent height={height}>
             <DrawerHeader>Ajouter votre emplacement</DrawerHeader>
             <DrawerBody>
-              <form onSubmit={mutate}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  mutate();
+                }}
+              >
                 <Stack>
                   <FormLabel>Le nom de votre activité :</FormLabel>
-                  <Input
-                    type="text"
-                    isRequired
-                    ref={nameRef}
-                    onFocus={() => setShowFooter(false)}
-                    onBlur={() => setShowFooter(true)}
-                    placeholder="Gargotte Matsiro, Poissonerie Bevata, ..."
-                  />
-                  <Textarea
-                    placeholder="Description"
-                    ref={descriptionRef}
-                    onFocus={() => setShowFooter(false)}
-                    onBlur={() => setShowFooter(true)}
-                  />
+                  <Input type="text" isRequired ref={nameRef} placeholder="Gargotte Matsiro, Poissonerie Bevata, ..." />
+                  <Textarea placeholder="Description" ref={descriptionRef} />
                   <FormLabel>Catégorie :</FormLabel>
                   <Popover
                     onOpen={autocompleteOpen}
@@ -159,11 +179,7 @@ export default function Location() {
                         value={keyword}
                         isRequired
                         ref={categoryRef}
-                        onBlur={() => {
-                          setShowFooter(true);
-                          autocompleteClose();
-                        }}
-                        onFocus={() => setShowFooter(false)}
+                        onBlur={autocompleteClose}
                         placeholder="gargotte, poissonerie, cyber, ..."
                         onChange={({ target }) => setKeyword(target.value)}
                       />
@@ -189,18 +205,12 @@ export default function Location() {
                     )}
                   </Popover>
                   <FormLabel>Année d'ouverture :</FormLabel>
-                  <Input
-                    type="number"
-                    ref={openingDate}
-                    placeholder="2000"
-                    onFocus={() => setShowFooter(false)}
-                    onBlur={() => setShowFooter(true)}
-                  />
+                  <Input type="number" ref={openingDate} placeholder="2000" />
                 </Stack>
                 <Input display={"none"} type="submit" ref={submitBtn} />
               </form>
             </DrawerBody>
-            {showFooter && (
+            {(previousHeight === null || previousHeight < height) && (
               <DrawerFooter width={"100%"}>
                 <Button width={"50%"} variant={"solid"} maxWidth={"250px"} onClick={onClose}>
                   Annuler

@@ -4,14 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useGoogleMap } from "@ubilabs/google-maps-react-hooks";
 import { useContext, useEffect, useRef } from "react";
 import { apiCall } from "..";
-import { mapContext } from "./Home";
+import { mapContext } from "./MapContext";
 
 export default function ClusterDisplayer() {
   const google = window.google;
   const map = useGoogleMap();
   const toast = useToast();
   const initial = useRef(true);
-  const { markerClusterRef, clusterDisplay, keyword, setDataAvailable } = useContext(mapContext);
+  const { markerClusterRef, infoWindowRef, clusterDisplay, keyword, setDataAvailable } = useContext(mapContext);
 
   const { isSuccess, data, isError, error } = useQuery({
     queryKey: [keyword],
@@ -25,19 +25,16 @@ export default function ClusterDisplayer() {
   });
 
   clusterDisplay.current = (list) => {
-    const infoWindow = new google.maps.InfoWindow();
+    infoWindowRef.current = new google.maps.InfoWindow();
 
     const markers = list.map(({ name, lat, lng }) => {
       const marker = new google.maps.Marker({ position: { lat, lng } });
 
       marker.addListener("click", () => {
-        infoWindow.setPosition({ lat, lng });
-        infoWindow.setContent(`
-          <div class="info-window">
+        infoWindowRef.current.setContent(`
             <h2>${name}</h2>
-          </div>
         `);
-        infoWindow.open({ map });
+        infoWindowRef.current.open({ map, anchor: marker });
       });
 
       return marker;

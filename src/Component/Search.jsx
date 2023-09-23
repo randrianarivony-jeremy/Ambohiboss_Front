@@ -21,12 +21,12 @@ import { IonIcon } from "@ionic/react";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { searchOutline } from "ionicons/icons";
 import React, { useContext, useEffect } from "react";
-import { mapContext } from "./Home";
+import { mapContext } from "./MapContext";
 import JobSearch from "./JobSearch";
 import PlaceSearch from "./PlaceSearch";
 
 function Search({ setCloseOnBlur, display }) {
-  const { setSelected, mapRef, inputRef, searchDefaultTab, keyword } = useContext(mapContext);
+  const { setSelected, inputRef, searchDefaultTab, keyword } = useContext(mapContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { height } = useWindowSize();
 
@@ -82,7 +82,6 @@ function Search({ setCloseOnBlur, display }) {
         onOpen={onOpen}
         placement="bottom"
         size="full"
-        finalFocusRef={mapRef}
       >
         <DrawerContent height={height}>
           <DrawerCloseButton />

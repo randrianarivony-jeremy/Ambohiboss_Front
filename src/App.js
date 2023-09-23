@@ -2,6 +2,8 @@ import { Box, Heading } from "@chakra-ui/react";
 import { createContext } from "react";
 import "./App.css";
 import Home from "./Component/Home";
+import MapContext from "./Component/MapContext";
+import Wallpaper from "./Component/Wallpaper";
 
 export const currentUserContext = createContext();
 
@@ -14,7 +16,10 @@ export const Ambohiboss = () => (
 function App() {
   return (
     <Box margin={"auto"} position={"relative"}>
-      <Home />
+      <MapContext>
+        <Wallpaper />
+        <Home />
+      </MapContext>
     </Box>
   );
 }
