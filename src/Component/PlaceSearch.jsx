@@ -83,7 +83,7 @@ export default function PlaceSearch({ onClose }) {
     <>
       <InputGroup>
         <Input
-          autoFocus
+          // autoFocus
           type="text"
           ref={inputRef}
           onChange={(e) => (e.target.value.length > 1 ? handleSearch(e.target.value) : null)}

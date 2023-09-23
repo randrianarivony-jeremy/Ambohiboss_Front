@@ -65,7 +65,7 @@ export default function ClusterDisplayer() {
           description: "Aucun résultat trouvé pour " + keyword,
           isClosable: true,
         });
-      setDataAvailable(true);
+      // setDataAvailable(true);
       initial.current = false;
     }
     if (map && isError && !toast.isActive("errorToast"))
