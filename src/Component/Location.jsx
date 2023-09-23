@@ -33,6 +33,7 @@ export default function Location() {
   const { selected, setSelected, markerClusterRef, setAddInterface } = useContext(mapContext);
   const map = useGoogleMap();
   const [keyword, setKeyword] = useState("");
+  const [showFooter, setShowFooter] = useState(true);
   const nameRef = useRef();
   const categoryRef = useRef();
   const descriptionRef = useRef();
@@ -130,8 +131,20 @@ export default function Location() {
               <form onSubmit={mutate}>
                 <Stack>
                   <FormLabel>Le nom de votre activité :</FormLabel>
-                  <Input type="text" isRequired ref={nameRef} placeholder="Gargotte Matsiro, Poissonerie Bevata, ..." />
-                  <Textarea placeholder="Description" ref={descriptionRef} />
+                  <Input
+                    type="text"
+                    isRequired
+                    ref={nameRef}
+                    onFocus={() => setShowFooter(false)}
+                    onBlur={() => setShowFooter(true)}
+                    placeholder="Gargotte Matsiro, Poissonerie Bevata, ..."
+                  />
+                  <Textarea
+                    placeholder="Description"
+                    ref={descriptionRef}
+                    onFocus={() => setShowFooter(false)}
+                    onBlur={() => setShowFooter(true)}
+                  />
                   <FormLabel>Catégorie :</FormLabel>
                   <Popover
                     onOpen={autocompleteOpen}
@@ -146,7 +159,11 @@ export default function Location() {
                         value={keyword}
                         isRequired
                         ref={categoryRef}
-                        onBlur={autocompleteClose}
+                        onBlur={() => {
+                          setShowFooter(true);
+                          autocompleteClose();
+                        }}
+                        onFocus={() => setShowFooter(false)}
                         placeholder="gargotte, poissonerie, cyber, ..."
                         onChange={({ target }) => setKeyword(target.value)}
                       />
@@ -172,26 +189,34 @@ export default function Location() {
                     )}
                   </Popover>
                   <FormLabel>Année d'ouverture :</FormLabel>
-                  <Input type="number" ref={openingDate} placeholder="2000" />
+                  <Input
+                    type="number"
+                    ref={openingDate}
+                    placeholder="2000"
+                    onFocus={() => setShowFooter(false)}
+                    onBlur={() => setShowFooter(true)}
+                  />
                 </Stack>
                 <Input display={"none"} type="submit" ref={submitBtn} />
               </form>
             </DrawerBody>
-            <DrawerFooter width={"100%"}>
-              <Button width={"50%"} variant={"solid"} maxWidth={"250px"} onClick={onClose}>
-                Annuler
-              </Button>
-              <Button
-                marginLeft={2}
-                width={"50%"}
-                colorScheme={"blue"}
-                maxW={"250px"}
-                onClick={() => submitBtn.current.click()}
-                isLoading={isLoading}
-              >
-                Enregistrer
-              </Button>
-            </DrawerFooter>
+            {showFooter && (
+              <DrawerFooter width={"100%"}>
+                <Button width={"50%"} variant={"solid"} maxWidth={"250px"} onClick={onClose}>
+                  Annuler
+                </Button>
+                <Button
+                  marginLeft={2}
+                  width={"50%"}
+                  colorScheme={"blue"}
+                  maxW={"250px"}
+                  onClick={() => submitBtn.current.click()}
+                  isLoading={isLoading}
+                >
+                  Enregistrer
+                </Button>
+              </DrawerFooter>
+            )}
           </DrawerContent>
         </Drawer>
       </>

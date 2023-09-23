@@ -1,5 +1,6 @@
 import { Box, Input, InputGroup, InputRightElement, List, ListItem, Spinner } from "@chakra-ui/react";
 import { useAutocompleteService, useGoogleMap, usePlacesService } from "@ubilabs/google-maps-react-hooks";
+import { useLockBodyScroll } from "@uidotdev/usehooks";
 import React, { useRef, useState } from "react";
 
 export default function PlaceSearch({ onClose }) {
@@ -14,6 +15,7 @@ export default function PlaceSearch({ onClose }) {
   const map = useGoogleMap();
   const autocompleteService = useAutocompleteService();
   const placesService = usePlacesService();
+  useLockBodyScroll();
 
   const handleSearch = (query) => {
     setFetching(true);

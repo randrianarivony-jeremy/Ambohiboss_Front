@@ -1,14 +1,13 @@
 import { Box, Input, InputGroup, InputRightElement, List, ListItem, Spinner } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useGoogleMap } from "@ubilabs/google-maps-react-hooks";
+import { useLockBodyScroll } from "@uidotdev/usehooks";
 import React, { useContext } from "react";
 import { apiCall } from "..";
 import { mapContext } from "./Home";
 
 export default function JobSearch({ onClose }) {
   const { inputRef, keyword, setKeyword, clusterDisplay } = useContext(mapContext);
-
-  const map = useGoogleMap();
+useLockBodyScroll();
 
   const handleQuery = async () => {
     const { data } = await apiCall.get("job/search?query=" + keyword);

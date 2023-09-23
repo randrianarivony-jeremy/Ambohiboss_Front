@@ -7,8 +7,6 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  Flex,
-  Heading,
   Image,
   ListItem,
   Skeleton,
@@ -17,10 +15,11 @@ import {
   UnorderedList,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
-import sample from "../Assets/Sample.png";
 import { useWindowSize } from "@uidotdev/usehooks";
+import React, { useState } from "react";
 import { Ambohiboss } from "../App";
+import sample from "../Assets/Sample.png";
+import logo from "../Assets/logo.svg";
 
 export default function About() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,6 +53,8 @@ export default function About() {
                   {imgLoading && <Skeleton width="100%" height={"100%"} position="absolute" zIndex={1} />}
                 </>
               </AspectRatio>
+
+              <Image src={logo} height={10} />
               <Text>
                 <strong>Ambohiboss</strong> est un outil conçu pour visualiser les emplacements géographiques des
                 activités économiques.

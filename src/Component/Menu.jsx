@@ -19,6 +19,7 @@ import Geolocalisation from "./Geolocalisation";
 import MapStyle from "./MapStyle";
 import Search from "./Search";
 import { mapContext } from "./Home";
+import { useClickAway } from "@uidotdev/usehooks";
 
 export default function MenuBtn() {
   const map = useGoogleMap();
@@ -26,6 +27,7 @@ export default function MenuBtn() {
   const [satelliteView, setSatelliteView] = useState(false);
   const [closeOnBlur, setCloseOnBlur] = useState(true);
   const { setAddInterface } = useContext(mapContext);
+  const focusRef = useClickAway(() => onClose());
 
   const handleMapType = () => {
     if (satelliteView) {
@@ -44,7 +46,7 @@ export default function MenuBtn() {
           <IonIcon icon={menu} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent width={"fit-content"} maxW={"calc(100vw - 16px)"}>
+      <PopoverContent ref={focusRef} width={"fit-content"} maxW={"calc(100vw - 16px)"}>
         <PopoverArrow />
         <PopoverBody>
           <HStack wrap={"wrap"} justify={"center"}>

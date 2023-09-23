@@ -168,7 +168,7 @@ export default function Home() {
             flexDirection="column"
             alignItems={"center"}
             justifyContent={"center"}
-            marginTop={20}
+            marginTop={18}
           >
             <Ambohiboss />
             <Text fontFamily={"italianno"} fontSize={"3xl"}>
