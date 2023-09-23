@@ -24,10 +24,12 @@ import React, { useContext, useEffect } from "react";
 import { mapContext } from "./Home";
 import JobSearch from "./JobSearch";
 import PlaceSearch from "./PlaceSearch";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 function Search({ setCloseOnBlur, display }) {
   const { setSelected, mapRef, inputRef, searchDefaultTab, keyword } = useContext(mapContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { height } = useWindowSize();
 
   useEffect(() => {
     if (!isOpen && display === "menu") setCloseOnBlur(true);
@@ -84,7 +86,7 @@ function Search({ setCloseOnBlur, display }) {
         finalFocusRef={mapRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent height={height}>
           <DrawerCloseButton />
           <DrawerBody paddingX={0}>
             <Tabs isFitted isLazy={true} defaultIndex={searchDefaultTab.current === "job" ? 0 : 1}>
