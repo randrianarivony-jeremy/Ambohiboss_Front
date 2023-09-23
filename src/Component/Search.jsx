@@ -5,7 +5,6 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerOverlay,
   Input,
   InputGroup,
   InputRightElement,
@@ -19,12 +18,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { IonIcon } from "@ionic/react";
+import { useWindowSize } from "@uidotdev/usehooks";
 import { searchOutline } from "ionicons/icons";
 import React, { useContext, useEffect } from "react";
 import { mapContext } from "./Home";
 import JobSearch from "./JobSearch";
 import PlaceSearch from "./PlaceSearch";
-import { useWindowSize } from "@uidotdev/usehooks";
 
 function Search({ setCloseOnBlur, display }) {
   const { setSelected, mapRef, inputRef, searchDefaultTab, keyword } = useContext(mapContext);
@@ -85,7 +84,6 @@ function Search({ setCloseOnBlur, display }) {
         size="full"
         finalFocusRef={mapRef}
       >
-        <DrawerOverlay />
         <DrawerContent height={height}>
           <DrawerCloseButton />
           <DrawerBody paddingX={0}>
@@ -103,7 +101,6 @@ function Search({ setCloseOnBlur, display }) {
                 </TabPanel>
               </TabPanels>
             </Tabs>
-            <Button>{window.scrollY}</Button>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

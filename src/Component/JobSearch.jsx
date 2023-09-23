@@ -28,7 +28,7 @@ useLockBodyScroll();
         <Input
           type="text"
           ref={inputRef}
-          // autoFocus
+          autoFocus
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="Activité, profession, job, ..."
