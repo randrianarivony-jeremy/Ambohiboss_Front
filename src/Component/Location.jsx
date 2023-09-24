@@ -113,7 +113,11 @@ export default function Location() {
       onClose();
       setAddInterface(false);
       infoWindowRef.current.setContent(`
-            <Heading>${nameRef.current.value}</Heading>
+      <div class='infowindow'>
+      <p class='infowindow-name'>${nameRef.current.value}</p>
+      <p class='infowindow-category'>${categoryRef.current.value}</p>
+      <p class='infowindow-description'>${descriptionRef.current.value}</p>
+      </div>
         `);
       infoWindowRef.current.open({ map, anchor: markerRef.current });
       setSelected(false);

@@ -1,7 +1,7 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@chakra-ui/react";
 import { GoogleMapsProvider } from "@ubilabs/google-maps-react-hooks";
-import { useWindowSize } from "@uidotdev/usehooks";
-import React, { useCallback, useContext, useState } from "react";
+import { useNetworkState, useWindowSize } from "@uidotdev/usehooks";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import About from "./About";
 import ClusterDisplayer from "./ClusterDisplayer";
 import Location from "./Location";
@@ -120,41 +120,83 @@ const mapOptions = {
 };
 
 export default function Home() {
+  const google = window.google;
   const [mapContainer, setMapContainer] = useState(null);
   const { height } = useWindowSize();
   const { addInterface, setAddInterface, setKeyword } = useContext(mapContext);
+  const { online } = useNetworkState();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // const { isSuccess, data, isError, error } = useQuery({
+  //   queryKey: [keyword],
+  //   queryFn: async () => {
+  //     const { data } = await apiCall.get("job/search?query=" + keyword);
+  //     return data;
+  //   },
+  //   enabled: keyword.length > 2,
+  //   staleTime: 300000, //5min
+  //   refetchOnWindowFocus: false,
+  // });
 
   const mapRef = useCallback((node) => {
     node && setMapContainer(node);
   }, []);
 
+  // const handleDefaultDisplay = useCallback((map) => {
+  //   const info = new google.maps.InfoWindow();
+  // });
+
+  useEffect(() => {
+    if (online) onClose();
+  }, [online]);
+
   return (
-    <GoogleMapsProvider
-      googleMapsAPIKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-      mapContainer={mapContainer}
-      mapOptions={mapOptions}
-      libraries={["places"]}
-    >
-      <div ref={mapRef} id="container" style={{ height: height + "px" }} />
-      <ClusterDisplayer />
-      {addInterface ? (
-        <Button
-          pos={"absolute"}
-          top={2}
-          left={2}
-          onClick={() => {
-            setAddInterface(false);
-            setKeyword("");
-          }}
-        >
-          Retour
-        </Button>
-      ) : (
-        <About />
+    <>
+      <GoogleMapsProvider
+        googleMapsAPIKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+        mapContainer={mapContainer}
+        mapOptions={mapOptions}
+        libraries={["places"]}
+        // onLoadMap={handleDefaultDisplay}
+      >
+        <div ref={mapRef} id="container" style={{ height: height + "px" }} />
+        <ClusterDisplayer />
+        {addInterface ? (
+          <Button
+            pos={"absolute"}
+            top={2}
+            left={2}
+            onClick={() => {
+              setAddInterface(false);
+              setKeyword("");
+            }}
+          >
+            Retour
+          </Button>
+        ) : (
+          <About />
+        )}
+        <Menu />
+        {addInterface ? <Location /> : <Search display={"home"} />}
+        <Onboarding />
+      </GoogleMapsProvider>
+
+      {!online && (
+        <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} isCentered>
+          <ModalContent>
+            <ModalHeader>Connectez-vous à un réseau</ModalHeader>
+            <ModalBody
+              display={"flex"}
+              flexDirection="column"
+              alignItems={"center"}
+              justifyContent={"center"}
+              marginTop={20}
+            >
+              Pour utiliser Ambohiboss, activez les données mobiles ou connectez-vous au Wifi.
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       )}
-      <Menu />
-      {addInterface ? <Location /> : <Search display={"home"} />}
-      <Onboarding />
-    </GoogleMapsProvider>
+    </>
   );
 }

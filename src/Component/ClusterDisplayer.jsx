@@ -27,12 +27,16 @@ export default function ClusterDisplayer() {
   clusterDisplay.current = (list) => {
     infoWindowRef.current = new google.maps.InfoWindow();
 
-    const markers = list.map(({ name, lat, lng }) => {
+    const markers = list.map(({ name, lat, lng, description, category }) => {
       const marker = new google.maps.Marker({ position: { lat, lng } });
 
       marker.addListener("click", () => {
         infoWindowRef.current.setContent(`
-            <h2>${name}</h2>
+        <div class='infowindow'>
+        <p class='infowindow-name'>${name}</p>
+        <p class='infowindow-category'>${category}</p>
+        <p class='infowindow-description'>${description}</p>
+        </div>
         `);
         infoWindowRef.current.open({ map, anchor: marker });
       });

@@ -17,3 +17,18 @@ body,
 .swiper-pagination-bullets{
   bottom: 0 !important;
 }
+
+.infowindow{
+  padding: 8px;
+}
+
+.infowindow-name{
+  font-style: italic;
+}
+.infowindow-category{
+  font-weight: bold;
+}
+
+.infowindow-description{
+  margin-top: 4px;
+}
