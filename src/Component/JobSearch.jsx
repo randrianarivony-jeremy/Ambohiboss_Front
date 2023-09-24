@@ -4,10 +4,11 @@ import { useLockBodyScroll } from "@uidotdev/usehooks";
 import React, { useContext } from "react";
 import { apiCall } from "..";
 import { mapContext } from "./MapContext";
+import Recent from "../Pages/Search/Recent";
 
 export default function JobSearch({ onClose }) {
   const { inputRef, keyword, setKeyword, clusterDisplay } = useContext(mapContext);
-useLockBodyScroll();
+  useLockBodyScroll();
 
   const handleQuery = async () => {
     const { data } = await apiCall.get("job/search?query=" + keyword);
@@ -67,6 +68,7 @@ useLockBodyScroll();
       ) : (
         isError && <Box marginTop={3}>{error.message}</Box>
       )}
+      <Recent />
     </>
   );
 }
