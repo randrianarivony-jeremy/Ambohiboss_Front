@@ -51,13 +51,13 @@ useLockBodyScroll();
                   key={key}
                   onClick={() => {
                     clusterDisplay.current(jobs);
-                    setKeyword(jobs[0].name);
+                    setKeyword(jobs[0].category);
                     onClose();
                   }}
                   display={"flex"}
                   justifyContent={"space-between"}
                 >
-                  <span>{jobs[0].name}</span>
+                  <span>{jobs[0].category}</span>
                   <span>{jobs.length} résultats</span>
                 </ListItem>
               ))}

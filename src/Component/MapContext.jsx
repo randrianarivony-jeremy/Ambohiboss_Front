@@ -8,6 +8,7 @@ export default function MapContext({ children }) {
   const searchDefaultTab = useRef("place");
   const markerClusterRef = useRef();
   const clusterDisplay = useRef();
+  const activeMarkerRef = useRef();
   const [addInterface, setAddInterface] = useState(false);
   const [keyword, setKeyword] = useState("gargotte");
   const infoWindowRef = useRef();
@@ -22,6 +23,7 @@ export default function MapContext({ children }) {
         keyword,
         setKeyword,
         dataAvailable,
+        activeMarkerRef,
         setDataAvailable,
         markerClusterRef,
         clusterDisplay,

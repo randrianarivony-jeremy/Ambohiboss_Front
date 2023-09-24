@@ -1,7 +1,9 @@
-import { Button, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
+import { IonIcon } from "@ionic/react";
 import { GoogleMapsProvider } from "@ubilabs/google-maps-react-hooks";
-import { useNetworkState, useWindowSize } from "@uidotdev/usehooks";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useWindowSize } from "@uidotdev/usehooks";
+import { add } from "ionicons/icons";
+import React, { useCallback, useContext, useState } from "react";
 import About from "./About";
 import ClusterDisplayer from "./ClusterDisplayer";
 import Location from "./Location";
@@ -120,12 +122,9 @@ const mapOptions = {
 };
 
 export default function Home() {
-  const google = window.google;
   const [mapContainer, setMapContainer] = useState(null);
   const { height } = useWindowSize();
   const { addInterface, setAddInterface, setKeyword } = useContext(mapContext);
-  const { online } = useNetworkState();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // const { isSuccess, data, isError, error } = useQuery({
   //   queryKey: [keyword],
@@ -146,57 +145,35 @@ export default function Home() {
   //   const info = new google.maps.InfoWindow();
   // });
 
-  useEffect(() => {
-    if (online) onClose();
-  }, [online]);
-
   return (
-    <>
-      <GoogleMapsProvider
-        googleMapsAPIKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-        mapContainer={mapContainer}
-        mapOptions={mapOptions}
-        libraries={["places"]}
-        // onLoadMap={handleDefaultDisplay}
-      >
-        <div ref={mapRef} id="container" style={{ height: height + "px" }} />
-        <ClusterDisplayer />
-        {addInterface ? (
-          <Button
-            pos={"absolute"}
-            top={2}
-            left={2}
-            onClick={() => {
-              setAddInterface(false);
-              setKeyword("");
-            }}
-          >
-            Retour
-          </Button>
-        ) : (
-          <About />
-        )}
-        <Menu />
-        {addInterface ? <Location /> : <Search display={"home"} />}
-        <Onboarding />
-      </GoogleMapsProvider>
-
-      {!online && (
-        <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} isCentered>
-          <ModalContent>
-            <ModalHeader>Connectez-vous à un réseau</ModalHeader>
-            <ModalBody
-              display={"flex"}
-              flexDirection="column"
-              alignItems={"center"}
-              justifyContent={"center"}
-              marginTop={20}
-            >
-              Pour utiliser Ambohiboss, activez les données mobiles ou connectez-vous au Wifi.
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+    <GoogleMapsProvider
+      googleMapsAPIKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+      mapContainer={mapContainer}
+      mapOptions={mapOptions}
+      libraries={["places"]}
+      // onLoadMap={handleDefaultDisplay}
+    >
+      <div ref={mapRef} id="container" style={{ height: height + "px" }} />
+      <ClusterDisplayer />
+      {!addInterface && <About />}
+      {!addInterface && (
+        <Button
+          pos={"absolute"}
+          top={2}
+          paddingX={0}
+          right={16}
+          boxSize={12}
+          bgColor={"#4D9DFF"}
+          color={"white"}
+          rounded={"full"}
+          onClick={() => setAddInterface(true)}
+        >
+          <IonIcon icon={add} style={{ fontSize: "24px" }} />
+        </Button>
       )}
-    </>
+      <Menu />
+      {addInterface ? <Location /> : <Search display={"home"} />}
+      <Onboarding />
+    </GoogleMapsProvider>
   );
 }

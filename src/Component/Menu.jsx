@@ -26,7 +26,7 @@ export default function MenuBtn() {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const [satelliteView, setSatelliteView] = useState(false);
   const [closeOnBlur, setCloseOnBlur] = useState(true);
-  const { setAddInterface } = useContext(mapContext);
+  const { addInterface, setAddInterface } = useContext(mapContext);
   const focusRef = useClickAway(() => {
     if (closeOnBlur) onClose();
   });
@@ -44,7 +44,16 @@ export default function MenuBtn() {
   return (
     <Popover placement="bottom-end" isLazy closeOnBlur={closeOnBlur} isOpen={isOpen} onClose={onClose}>
       <PopoverTrigger>
-        <Button position={"absolute"} top={2} right={2} onClick={onToggle} bgColor={"blackAlpha.500"} color={"white"}>
+        <Button
+          position={"absolute"}
+          top={2}
+          right={2}
+          boxSize={12}
+          rounded={"full"}
+          onClick={onToggle}
+          bgColor={"blackAlpha.500"}
+          color={"white"}
+        >
           <IonIcon icon={menu} />
         </Button>
       </PopoverTrigger>
@@ -52,22 +61,24 @@ export default function MenuBtn() {
         <PopoverArrow />
         <PopoverBody>
           <HStack wrap={"wrap"} justify={"center"}>
-            <Square
-              size={20}
-              onClick={() => {
-                setAddInterface(true);
-                onClose();
-              }}
-            >
-              <Box>
-                <Square size={"40px"} margin={"auto"}>
-                  <IonIcon icon={addOutline} style={{ fontSize: "32px" }} />
-                </Square>
-                <Text fontSize={"xs"} textAlign={"center"}>
-                  Ajouter
-                </Text>
-              </Box>
-            </Square>
+            {!addInterface && (
+              <Square
+                size={20}
+                onClick={() => {
+                  setAddInterface(true);
+                  onClose();
+                }}
+              >
+                <Box>
+                  <Square size={"40px"} margin={"auto"}>
+                    <IonIcon icon={addOutline} style={{ fontSize: "32px" }} />
+                  </Square>
+                  <Text fontSize={"xs"} textAlign={"center"}>
+                    Ajouter
+                  </Text>
+                </Box>
+              </Square>
+            )}
             <Search setCloseOnBlur={setCloseOnBlur} display={"menu"} />
             <MapStyle />
             <Geolocalisation />

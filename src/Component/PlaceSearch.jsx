@@ -1,11 +1,13 @@
 import { Box, Input, InputGroup, InputRightElement, List, ListItem, Spinner } from "@chakra-ui/react";
 import { useAutocompleteService, useGoogleMap, usePlacesService } from "@ubilabs/google-maps-react-hooks";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { mapContext } from "./MapContext";
 
 export default function PlaceSearch({ onClose }) {
   const google = window.google;
   const inputRef = useRef(null);
+  const { activeMarkerRef } = useContext(mapContext);
   const [emptyResult, setEmptyResult] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [preductionResultStatus, setPredictionResultStatus] = useState();
@@ -54,7 +56,6 @@ export default function PlaceSearch({ onClose }) {
   };
 
   const selectSuggestion = (suggestion) => {
-    console.log("first");
     placesService?.getDetails(
       { placeId: suggestion.id, fields: ["geometry.location", "types"] },
       (placeResult, status) => {
@@ -62,10 +63,11 @@ export default function PlaceSearch({ onClose }) {
           return;
         }
         onClose();
-        new google.maps.Marker({
-          map,
-          position: placeResult.geometry.location,
-        });
+        if (!activeMarkerRef.current)
+          activeMarkerRef.current = new google.maps.Marker({
+            map,
+          });
+        activeMarkerRef.current.setPosition(placeResult.geometry.location);
         if (
           placeResult.types.includes("administrative_area_level_1") ||
           placeResult.types.includes("administrative_area_level_2")
