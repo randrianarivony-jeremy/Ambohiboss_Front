@@ -21,7 +21,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useGoogleMap } from "@ubilabs/google-maps-react-hooks";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { apiCall } from "..";
@@ -30,6 +30,7 @@ import { mapContext } from "./MapContext";
 
 export default function Location() {
   const google = window.google;
+  const queryClient = useQueryClient();
   const { selected, setSelected, activeMarkerRef, markerClusterRef, setAddInterface, setKeyword, infoWindowRef } =
     useContext(mapContext);
   const map = useGoogleMap();
@@ -127,6 +128,7 @@ export default function Location() {
           status: "success",
           title: "Enregistrement réussi",
         });
+      queryClient.invalidateQueries({ queryKey: ["recent"] });
     }
   }, [isSuccess]);
 
